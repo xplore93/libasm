@@ -6,7 +6,7 @@
 /*   By: estina <estina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 16:56:42 by estina            #+#    #+#             */
-/*   Updated: 2020/01/12 20:55:24 by estina           ###   ########.fr       */
+/*   Updated: 2020/01/13 16:12:06 by estina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		ft_read(int fildes, const void *buf, int nbyte);
 char	*ft_strdup(const char *s1);
 void	ft_list_push_front(t_list **begin_list, void *data);
 int		ft_list_size(t_list *begin_list);
+void	ft_list_sort(t_list **begin_list,int (*cmp)());
 
 static void	check_strlen(char *str)
 {
@@ -234,5 +235,44 @@ int			main()
 
 	printf("%sFT_LIST_SIZE:\n", YELLOW);
 	check_list_size();
+
+	printf("%sFT_LIST_SORT:\n", YELLOW);
+	printf(WHITE);
+	t_list	*lst = NULL;
+	ft_list_push_front(&lst, "123");
+	ft_list_push_front(&lst, "456");
+	ft_list_push_front(&lst, "789");
+	t_list	*sorted = NULL;
+	ft_list_push_front(&sorted, "789");
+	ft_list_push_front(&sorted, "456");
+	ft_list_push_front(&sorted, "123");
+	t_list *aux = lst;
+	printf("	%sOR:%s	", MAGENTA, WHITE);
+	while (aux)
+	{
+		printf("%s	", aux->data);
+		aux = aux->next;
+	}
+	printf("\n");
+	ft_list_sort(&lst, &strcmp);
+	int		i = 0;
+	printf("	%sSR:%s	", MAGENTA, WHITE);
+	while (lst)
+	{
+		printf("%s	", lst->data);
+		if (ft_strcmp(lst->data, sorted->data))
+			i = 1;
+		aux = lst;
+		lst = lst->next;
+		free(aux);
+		aux = sorted;
+		sorted = sorted->next;
+		free(aux);
+	}
+	if (i == 0)
+		printf("	🍏\n");
+	else
+		printf("	🍎\n");
+	printf("\n");
 	return (0);
 }
